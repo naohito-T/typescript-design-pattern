@@ -9,7 +9,12 @@
 
 ## 参考
 
-https://zenn.dev/mossan_hoshi/books/84487f17784b44/viewer/part1_creational
+[tech score](https://www.techscore.com/tech/DesignPattern/)
+[](https://zenn.dev/mossan_hoshi/books/84487f17784b44/viewer/part1_creational)
+
+## ユビキタス
+
+Concrete（具体的な）
 
 ## Creational（生成）
 [![Image from Gyazo](https://i.gyazo.com/9ca9e118bcb747e9aafff8e4b5bf4105.png)](https://gyazo.com/9ca9e118bcb747e9aafff8e4b5bf4105)
