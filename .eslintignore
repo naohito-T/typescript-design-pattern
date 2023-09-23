@@ -1,0 +1,8 @@
+# Directory
+node_modules/
+documentation/
+
+# Files
+package.json
+tsconfig.json
+.eslintrc.js
