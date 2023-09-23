@@ -9,8 +9,9 @@
 
 ## 参考
 
-[tech score](https://www.techscore.com/tech/DesignPattern/)
-[](https://zenn.dev/mossan_hoshi/books/84487f17784b44/viewer/part1_creational)
+[tech score](https://www.techscore.com/tech/DesignPattern/)  
+[](https://zenn.dev/mossan_hoshi/books/84487f17784b44/viewer/part1_creational)  
+[デザインパターンの絵本](https://zenn.dev/mossan_hoshi/books/84487f17784b44)
 
 ## ユビキタス
 
@@ -23,3 +24,7 @@ Concrete（具体的な）
 これらのパターンは、インスタンス化プロセスを抽象化し、与えられたユースケースに対してどのオブジェクトを作成する必要があるかを柔軟に決定できます。  
 作成パターンは、オブジェクトの作成がうまく整理され、将来の変更に容易に適応できるようにすることで、コードの再利用性・保守性・および拡張性を促進します。
 
+## 草案
+
+`ts-node`で実行したらconsole.logに説明文を出すのもいいかも
+commanderとかで実行する前にpecoみたいに選べるようにするのもおもしろいかも
