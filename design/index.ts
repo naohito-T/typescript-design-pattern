@@ -1,3 +1,3 @@
-import { main } from "@/creational";
+import { main } from '@/creational';
 
-main("aa");
+main('aa');
