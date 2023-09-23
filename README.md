@@ -9,8 +9,9 @@
 
 ## 参考
 
-[tech score](https://www.techscore.com/tech/DesignPattern/)
-[](https://zenn.dev/mossan_hoshi/books/84487f17784b44/viewer/part1_creational)
+[tech score](https://www.techscore.com/tech/DesignPattern/)  
+[](https://zenn.dev/mossan_hoshi/books/84487f17784b44/viewer/part1_creational)  
+[デザインパターンの絵本](https://zenn.dev/mossan_hoshi/books/84487f17784b44)
 
 ## ユビキタス
 
