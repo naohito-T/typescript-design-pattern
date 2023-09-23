@@ -1,0 +1,11 @@
+# Directory
+node_modules/
+documentation/
+.yarn/
+
+# Files
+*.yml
+*.yaml
+*.md
+package.json
+tsconfig.json

@@ -1,0 +1,6 @@
+{
+  "typescript.format.enable": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "editor.formatOnSave": true
+}
