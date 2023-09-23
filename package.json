@@ -1,14 +1,15 @@
 {
   "name": "typescript-design-pattern",
   "version": "1.0.0",
-  "description": "",
+  "description": "GoF design pattern in TypeScript",
   "main": "index.js",
   "author": "naohito-T",
   "license": "MIT",
   "keywords": [
     "typescript",
     "design",
-    "pattern"
+    "pattern",
+    "GoF"
   ],
   "engines": {
     "node": "^18.17.1",
