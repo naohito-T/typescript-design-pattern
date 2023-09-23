@@ -1,0 +1,11 @@
+# yarn (not using Zero-Installs)
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# depend
+node_modules/
