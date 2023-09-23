@@ -6,3 +6,4 @@ documentation/
 package.json
 tsconfig.json
 .eslintrc.js
+jest.config.js
