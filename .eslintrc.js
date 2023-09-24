@@ -50,9 +50,9 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['builtin'],
         alphabetize: { order: 'asc', caseInsensitive: true },
         pathGroups: [
-          { pattern: 'design/types/**', group: 'internal', position: 'before' },
+          { pattern: 'src/types/**', group: 'internal', position: 'before' },
           {
-            pattern: 'design/repositories/**',
+            pattern: 'src/repositories/**',
             group: 'internal',
             position: 'before',
           },
