@@ -1,5 +1,6 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
+import { FactoryMethod } from '@/design/creational';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 
@@ -9,7 +10,7 @@ interface CreationalAnswer extends Answers {
 
 const defaultQuestion = {
   type: 'list',
-  name: 'creational',
+  name: 'pattern', // keyの設定
   default: 'help',
 };
 
@@ -29,13 +30,16 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
     });
   }
 
-  public run = async () => {
+  public run = async (): Promise<void> => {
+    this.logger.debug(`CreationalCommand`);
     const answers = await prompt(this.question);
 
     this.logger.debug(`CreationalCommand answers: ${answers}`);
 
     switch (answers.pattern) {
       case 'factory-method':
+        const command = new FactoryMethod(this.logger);
+        await command.run();
         break;
       case 'abstract-factory':
         break;

@@ -11,7 +11,7 @@ interface LargeCategoryAnswer extends Answers {
 
 const defaultQuestion = {
   type: 'list',
-  name: 'large category pattern',
+  name: 'pattern',
   default: 'help',
 };
 
@@ -32,7 +32,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
     });
   }
 
-  public run = async () => {
+  public run = async (): Promise<void> => {
     const answers = await prompt(this.question);
 
     this.logger.debug(`MainCommand answers: ${JSON.stringify(answers)}`);
@@ -41,42 +41,22 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
 
     switch (answers.pattern) {
       case 'creational':
+        this.logger.debug(`MainCommand answers: creational`);
         const command = new CreationalCommand(this.logger);
         await command.run();
         break;
       case 'structural':
+        this.logger.debug(`MainCommand answers: structural`);
         break;
       case 'behavioral':
+        this.logger.debug(`MainCommand answers: behavioral`);
         break;
       case 'help':
         console.log('Help: 以下のデザインパターンから選んでください...');
         break;
       default:
+        this.logger.debug(`MainCommand answers: default`);
         break;
     }
-
-    // @todo ここでdesignパターンの3つのカテゴリを選ばせる。
-
-    // const program = new Command().version(E.VERSION);
-
-    // function collect(value: string, previous: string[]): string[] {
-    //   return [...previous, value];
-    // }
-
-    // program
-    //   .version('1.0.0')
-    //   .description(
-    //     `Welcome to Typescript design pattern\nFirst, please tell us about the three major categories in DESIGN PATTERN`,
-    //   )
-    //   .option('-p, --pizza-type <type>', 'Type of pizza')
-    //   .option('-s, --size <size>', 'Size of pizza', 'medium')
-    //   .option('-t, --topping <topping>', 'Toppings for pizza', collect, [])
-    //   .option('-d, --delivery', 'Deliver the pizza')
-    //   .addHelpText('after', '\nExample call:')
-    //   .addHelpText('after', '$ example -p pepperoni -t onion -t olive -d')
-    //   .parse();
-
-    // const options = program.opts();
-    // console.log('Options:', options);
   };
 }
