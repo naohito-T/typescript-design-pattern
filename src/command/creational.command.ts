@@ -31,11 +31,12 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
   }
 
   public run = async (): Promise<void> => {
-    this.logger.debug(`CreationalCommand`);
     const answers = await prompt(this.question);
-
     this.logger.debug(`CreationalCommand answers: ${answers}`);
+    await this.handler(answers);
+  };
 
+  private handler = async (answers: CreationalAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'factory-method':
         const command = new FactoryMethod(this.logger);
