@@ -9,3 +9,6 @@
 
 # depend
 node_modules/
+
+# env
+.env
