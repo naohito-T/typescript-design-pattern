@@ -5,7 +5,7 @@ import { DesignPatternInfo } from '@/design/design.interface';
 import { ILogger } from '@/logger';
 
 interface FactoryMethodAnswer extends Answers {
-  outputs: ('help' | 'description' | 'flow-chart' | 'example-code')[];
+  outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
 }
 
 const defaultQuestion = {
@@ -25,7 +25,13 @@ export class FactoryMethod extends BaseCommand<FactoryMethodAnswer> implements D
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Creationalの項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: [{ name: 'help' }, { name: 'description' }, { name: 'flow-chart' }, { name: 'example-code' }],
+        choices: [
+          { name: 'help' },
+          { name: 'exec' },
+          { name: 'description' },
+          { name: 'flow-chart' },
+          { name: 'example-code' },
+        ],
       },
     });
   }
@@ -40,6 +46,10 @@ export class FactoryMethod extends BaseCommand<FactoryMethodAnswer> implements D
     selectedOptions.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
+        return; // 脱出するように
+      } else if (option === 'exec') {
+        console.log('execが選択されました');
+        this.exec();
         return; // 脱出するように
       } else if (option === 'description') {
         outputMsg.push(this.description());
@@ -60,6 +70,7 @@ ${chalk.bold.bgGreen(`[description]`)}
 このパターンは「Virtual Constructor」とも呼ばれ、コンストラクターの代わりになるようなメソッドを作ることがキモなパターンです。
 コンストラクターの代わりにインスタンスの工場（Factory）となるメソッド（Method）を作るから「FactoryMethod」パターンなんですね。`;
 
+  /** @wip */
   public flowChart = () => {
     return ``;
   };
@@ -141,7 +152,7 @@ const engineRepairer: Robot = engineRepairerFactory.createRobot();
 console.log(engineRepairer.work()); // 修理中
 `;
 
-  public exec = () => {
+  public exec = (): void => {
     interface Robot {
       work(): string;
     }
