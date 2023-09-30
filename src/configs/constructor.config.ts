@@ -10,11 +10,14 @@ export class HelpConstructor {
     public static readonly FACTORY_METHOD =
       'サブクラスにインスタンス化するクラスを選択させるパターン。これによりクラスのインスタンス生成の責任がサブクラスに移譲される。';
 
-    public static readonly ABSTRACT_FACTORY = '関連するオブジェクトの家族を一貫して生成するためのインターフェースを提供します。具体的なクラスの実装をクライアントから分離します。';
+    public static readonly ABSTRACT_FACTORY =
+      '関連するオブジェクトの家族を一貫して生成するためのインターフェースを提供します。具体的なクラスの実装をクライアントから分離します。';
 
-    public static readonly BUILDER = 'オブジェクトの構築とその表現を分離することで、同じ構築プロセスで異なる表現のオブジェクトを生成することができます。'
+    public static readonly BUILDER =
+      'オブジェクトの構築とその表現を分離することで、同じ構築プロセスで異なる表現のオブジェクトを生成することができます。';
 
-    public static readonly PROTOTYPE = '既存のオブジェクトをコピーして新しいオブジェクトを生成するためのメカニズムを提供します。'
+    public static readonly PROTOTYPE =
+      '既存のオブジェクトをコピーして新しいオブジェクトを生成するためのメカニズムを提供します。';
   };
 
   public static STRUCTURAL = class {};

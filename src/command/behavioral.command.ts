@@ -1,12 +1,12 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
-import { FactoryMethod, AbstractFactory, Builder, Prototype } from '@/design/creational';
+import { Adapter } from '@/design/behavioral';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 import { HelpCommand } from './help.command';
 
-interface CreationalAnswer extends Answers {
-  pattern: 'help' | 'factory-method' | 'abstract-factory' | 'builder' | 'prototype';
+interface BehavioralCommandAnswer extends Answers {
+  pattern: 'help' | 'adapter' | 'abstract-factory' | 'builder' | 'prototype';
 }
 
 const defaultQuestion = {
@@ -15,7 +15,7 @@ const defaultQuestion = {
   default: 'help',
 };
 
-export class CreationalCommand extends BaseCommand<CreationalAnswer> {
+export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
   public readonly question;
 
   constructor(private readonly logger: ILogger) {
@@ -24,15 +24,15 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
       ...defaultQuestion,
       ...{
         message: `-------------------------------\n  ${chalk.bold.blue(
-          `Creationalの項目から実行するパターンを選んでください。\n`,
+          `Behavioral（ビヘイビア）の項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
           'help',
-          'factory-method',
+          'adapter',
           'abstract-factory',
           'builder',
           'prototype',
-        ] as CreationalAnswer['pattern'][],
+        ] as BehavioralCommandAnswer['pattern'][],
       },
     });
   }
@@ -43,25 +43,22 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
     await this.handler(answers);
   };
 
-  private handler = async (answers: CreationalAnswer): Promise<void> => {
+  private handler = async (answers: BehavioralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
-      case 'factory-method':
-        await new FactoryMethod(this.logger).run();
+      case 'adapter':
+        await new Adapter(this.logger).run();
         break;
       case 'abstract-factory':
-        await new AbstractFactory(this.logger).run();
         break;
       case 'builder':
-        await new Builder(this.logger).run();
         break;
       case 'prototype':
-        await new Prototype(this.logger).run();
         break;
       case 'help':
-        new HelpCommand(this.logger, 'large', 'creational').show();
+        new HelpCommand(this.logger, 'large', 'behavioral').show();
         break;
       default:
-        new HelpCommand(this.logger, 'large', 'creational').show();
+        new HelpCommand(this.logger, 'large', 'behavioral').show();
         break;
     }
   };
