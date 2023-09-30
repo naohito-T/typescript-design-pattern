@@ -19,6 +19,7 @@
   "scripts": {
     "repl": "ts-node",
     "start": "ts-node src/index.ts",
+    "start:locale": "ts-node src/locales/i18n.ts",
     "build": "swc src -d dist",
     "c:type": "tsc --noEmit",
     "c:lint": "eslint --max-warnings 0 --ext js,ts .",
@@ -32,6 +33,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
+    "i18next": "^23.5.1",
     "inquirer": "^8.2.6",
     "pino": "^8.15.1",
     "pino-pretty": "^10.2.0"

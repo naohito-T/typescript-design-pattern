@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
 import { BaseEnv, Environment as E } from '@/configs';
+import i18n from '@/locales/i18n';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 import { CreationalCommand } from './creational.command';
@@ -24,8 +25,8 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue('ようこそ ')}${chalk.bold.bgBlue(
-          'typescript design patternへ',
+        message: `-------------------------------\n  ${chalk.bold.bgBlue(
+          `${i18n.t('main.message')}`,
         )}\n  -------------------------------\n\n  以下の項目から実行するdesign patternの大カテゴリを選んでください。\n`,
         choices: ['creational', 'structural', 'behavioral', 'help'],
       },
@@ -34,16 +35,17 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
 
   public run = async (): Promise<void> => {
     const answers = await prompt(this.question);
-
     this.logger.debug(`MainCommand answers: ${JSON.stringify(answers)}`);
     this.logger.debug(`Env STAGE: ${BaseEnv.stage}`);
     this.logger.debug(`Env VERSION: ${E.VERSION}`);
+    await this.handler(answers);
+  };
 
+  private handler = async (answers: LargeCategoryAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'creational':
         this.logger.debug(`MainCommand answers: creational`);
-        const command = new CreationalCommand(this.logger);
-        await command.run();
+        await new CreationalCommand(this.logger).run();
         break;
       case 'structural':
         this.logger.debug(`MainCommand answers: structural`);
