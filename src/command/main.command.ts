@@ -4,6 +4,7 @@ import { BaseEnv, Environment as E } from '@/configs';
 import i18n from '@/locales/i18n';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
+import { BehavioralCommand } from './behavioral.command';
 import { CreationalCommand } from './creational.command';
 
 interface LargeCategoryAnswer extends Answers {
@@ -28,7 +29,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
         message: `-------------------------------\n  ${chalk.bold.bgBlue(
           `${i18n.t('main.message')}`,
         )}\n  -------------------------------\n\n  以下の項目から実行するdesign patternの大カテゴリを選んでください。\n`,
-        choices: ['creational', 'structural', 'behavioral', 'help'],
+        choices: ['creational', 'structural', 'behavioral', 'help'] as LargeCategoryAnswer['pattern'][],
       },
     });
   }
@@ -52,6 +53,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
         break;
       case 'behavioral':
         this.logger.debug(`MainCommand answers: behavioral`);
+        await new BehavioralCommand(this.logger).run();
         break;
       case 'help':
         console.log('Help: 以下のデザインパターンから選んでください...');

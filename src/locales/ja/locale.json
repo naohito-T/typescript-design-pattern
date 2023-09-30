@@ -1,6 +1,6 @@
 {
-    "main": {
-        "message": "ようこそ!! typescript design patternへ",
-        "info": "以下の項目から実行するdesign patternの大カテゴリを選んでください。"
-    }
+  "main": {
+    "message": "ようこそ!! typescript design patternへ",
+    "info": "以下の項目から実行するdesign patternの大カテゴリを選んでください。"
+  }
 }
