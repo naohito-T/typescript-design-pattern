@@ -1,3 +1,4 @@
+import { HelpConstructor as C } from '@/configs';
 import { ILogger } from '@/logger';
 
 type MessageCategory = 'large' | 'medium' | 'small';
@@ -15,7 +16,7 @@ export class HelpCommand {
     [
       'large',
       {
-        creational: 'Large Creational Design Patternの説明...',
+        creational: C.CREATIONAL.CREATIONAL_DESC,
         structural: 'Large Structural Design Patternの説明...',
         behavioral: 'Large Behavioral Design Patternの説明...',
       },
@@ -39,9 +40,9 @@ export class HelpCommand {
   ]);
 
   constructor(
+    private readonly logger: ILogger,
     private readonly context: MessageCategory,
     private readonly subCategory: keyof DesignPatterns,
-    private readonly logger: ILogger,
   ) {
     this.logger.debug(`Help Command context: ${this.context}`);
     this.content = HelpCommand.helpMessagesMap.get(this.context)?.[this.subCategory];

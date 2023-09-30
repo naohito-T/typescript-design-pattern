@@ -1,11 +1,12 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
-import { FactoryMethod, AbstractFactory, Builder } from '@/design/creational';
+import { FactoryMethod, AbstractFactory, Builder, Prototype } from '@/design/creational';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
+import { HelpCommand } from './help.command';
 
 interface CreationalAnswer extends Answers {
-  pattern: 'help' | 'factory-method' | 'abstract-factory' | 'builder';
+  pattern: 'help' | 'factory-method' | 'abstract-factory' | 'builder' | 'prototype';
 }
 
 const defaultQuestion = {
@@ -25,7 +26,7 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Creationalの項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: ['help', 'factory-method', 'abstract-factory', 'builder'],
+        choices: ['help', 'factory-method', 'abstract-factory', 'builder', 'prototype'],
       },
     });
   }
@@ -47,10 +48,14 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
       case 'builder':
         await new Builder(this.logger).run();
         break;
+      case 'prototype':
+        await new Prototype(this.logger).run();
+        break;
       case 'help':
-        console.log('Help: 以下のデザインパターンから選んでください...');
+        new HelpCommand(this.logger, 'large', 'creational').show();
         break;
       default:
+        new HelpCommand(this.logger, 'large', 'creational').show();
         break;
     }
   };
