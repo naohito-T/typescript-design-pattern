@@ -45,8 +45,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
     switch (answers.pattern) {
       case 'creational':
         this.logger.debug(`MainCommand answers: creational`);
-        const command = new CreationalCommand(this.logger);
-        await command.run();
+        await new CreationalCommand(this.logger).run();
         break;
       case 'structural':
         this.logger.debug(`MainCommand answers: structural`);

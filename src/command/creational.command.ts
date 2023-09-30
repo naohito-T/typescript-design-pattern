@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
-import { FactoryMethod } from '@/design/creational';
+import { FactoryMethod, AbstractFactory, Builder } from '@/design/creational';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 
@@ -39,12 +39,13 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
   private handler = async (answers: CreationalAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'factory-method':
-        const command = new FactoryMethod(this.logger);
-        await command.run();
+        await new FactoryMethod(this.logger).run();
         break;
       case 'abstract-factory':
+        await new AbstractFactory(this.logger).run();
         break;
       case 'builder':
+        await new Builder(this.logger).run();
         break;
       case 'help':
         console.log('Help: 以下のデザインパターンから選んでください...');
