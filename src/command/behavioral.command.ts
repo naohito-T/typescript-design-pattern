@@ -6,7 +6,7 @@ import { BaseCommand } from './_base.command';
 import { HelpCommand } from './help.command';
 
 interface BehavioralCommandAnswer extends Answers {
-  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator';
+  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade';
 }
 
 const defaultQuestion = {
@@ -26,7 +26,14 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Behavioral（ビヘイビア）の項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: ['help', 'adapter', 'bridge', 'composite', 'decorator'] as BehavioralCommandAnswer['pattern'][],
+        choices: [
+          'help',
+          'adapter',
+          'bridge',
+          'composite',
+          'decorator',
+          'facade',
+        ] as BehavioralCommandAnswer['pattern'][],
       },
     });
   }
@@ -49,6 +56,9 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
         await new Composite(this.logger).run();
         break;
       case 'decorator':
+        await new Decorator(this.logger).run();
+        break;
+      case 'facade':
         await new Decorator(this.logger).run();
         break;
       case 'help':
