@@ -1,11 +1,11 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
+import { BaseCommand } from '@/command/_base.command';
+import { HelpCommand } from '@/command/help';
 import { Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy } from '@/design/behavioral';
 import { ILogger } from '@/logger';
-import { BaseCommand } from './_base.command';
-import { HelpCommand } from './help.command';
 
-interface BehavioralCommandAnswer extends Answers {
+interface StructuralCommandAnswer extends Answers {
   pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade' | 'flyweight' | 'proxy';
 }
 
@@ -15,7 +15,7 @@ const defaultQuestion = {
   default: 'help',
 };
 
-export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
+export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
   public readonly question;
 
   constructor(private readonly logger: ILogger) {
@@ -24,7 +24,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
       ...defaultQuestion,
       ...{
         message: `-------------------------------\n  ${chalk.bold.blue(
-          `Behavioral（ビヘイビア）の項目から実行するパターンを選んでください。\n`,
+          `Structural（ストラクチャー）の項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
           'help',
@@ -35,7 +35,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
           'facade',
           'flyweight',
           'proxy',
-        ] as BehavioralCommandAnswer['pattern'][],
+        ] as StructuralCommandAnswer['pattern'][],
       },
     });
   }
@@ -46,7 +46,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
     await this.handler(answers);
   };
 
-  private handler = async (answers: BehavioralCommandAnswer): Promise<void> => {
+  private handler = async (answers: StructuralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'adapter':
         await new Adapter(this.logger).run();

@@ -6,6 +6,7 @@ import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 import { BehavioralCommand } from './behavioral.command';
 import { CreationalCommand } from './creational.command';
+import { StructuralCommand } from './structural.command';
 
 interface LargeCategoryAnswer extends Answers {
   pattern: 'help' | 'creational' | 'structural' | 'behavioral';
@@ -50,6 +51,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
         break;
       case 'structural':
         this.logger.debug(`MainCommand answers: structural`);
+        await new StructuralCommand(this.logger).run();
         break;
       case 'behavioral':
         this.logger.debug(`MainCommand answers: behavioral`);

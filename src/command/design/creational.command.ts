@@ -1,9 +1,9 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
+import { BaseCommand } from '@/command/_base.command';
+import { HelpCommand } from '@/command/help';
 import { FactoryMethod, AbstractFactory, Builder, Prototype } from '@/design/creational';
 import { ILogger } from '@/logger';
-import { BaseCommand } from './_base.command';
-import { HelpCommand } from './help.command';
 
 interface CreationalAnswer extends Answers {
   pattern: 'help' | 'factory-method' | 'abstract-factory' | 'builder' | 'prototype';
