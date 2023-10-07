@@ -1,12 +1,12 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
-import { Adapter, Bridge, Composite, Decorator } from '@/design/behavioral';
+import { Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy } from '@/design/behavioral';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 import { HelpCommand } from './help.command';
 
 interface BehavioralCommandAnswer extends Answers {
-  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade' | 'flyweight';
+  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade' | 'flyweight' | 'proxy';
 }
 
 const defaultQuestion = {
@@ -34,6 +34,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
           'decorator',
           'facade',
           'flyweight',
+          'proxy',
         ] as BehavioralCommandAnswer['pattern'][],
       },
     });
@@ -60,10 +61,13 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
         await new Decorator(this.logger).run();
         break;
       case 'facade':
-        await new Decorator(this.logger).run();
+        await new Facade(this.logger).run();
         break;
       case 'flyweight':
-        await new Decorator(this.logger).run();
+        await new Flyweight(this.logger).run();
+        break;
+      case 'proxy':
+        await new Proxy(this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'behavioral').show();
