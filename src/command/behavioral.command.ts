@@ -1,12 +1,12 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
-import { Adapter, Bridge, Composite } from '@/design/behavioral';
+import { Adapter, Bridge, Composite, Decorator } from '@/design/behavioral';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 import { HelpCommand } from './help.command';
 
 interface BehavioralCommandAnswer extends Answers {
-  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'prototype';
+  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator';
 }
 
 const defaultQuestion = {
@@ -26,7 +26,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Behavioral（ビヘイビア）の項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: ['help', 'adapter', 'bridge', 'composite', 'prototype'] as BehavioralCommandAnswer['pattern'][],
+        choices: ['help', 'adapter', 'bridge', 'composite', 'decorator'] as BehavioralCommandAnswer['pattern'][],
       },
     });
   }
@@ -48,7 +48,8 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
       case 'composite':
         await new Composite(this.logger).run();
         break;
-      case 'prototype':
+      case 'decorator':
+        await new Decorator(this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'behavioral').show();
