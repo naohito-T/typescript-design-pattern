@@ -2,11 +2,11 @@ import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
-import { Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy } from '@/design/behavioral';
+import { ChainOfResponsibility } from '@/design/structural';
 import { ILogger } from '@/logger';
 
 interface StructuralCommandAnswer extends Answers {
-  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade' | 'flyweight' | 'proxy';
+  pattern: 'help' | 'chain-of-responsibility';
 }
 
 const defaultQuestion = {
@@ -26,16 +26,7 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Structural（ストラクチャー）の項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: [
-          'help',
-          'adapter',
-          'bridge',
-          'composite',
-          'decorator',
-          'facade',
-          'flyweight',
-          'proxy',
-        ] as StructuralCommandAnswer['pattern'][],
+        choices: ['help', 'chain-of-responsibility'] as StructuralCommandAnswer['pattern'][],
       },
     });
   }
@@ -48,32 +39,14 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
 
   private handler = async (answers: StructuralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
-      case 'adapter':
-        await new Adapter(this.logger).run();
-        break;
-      case 'bridge':
-        await new Bridge(this.logger).run();
-        break;
-      case 'composite':
-        await new Composite(this.logger).run();
-        break;
-      case 'decorator':
-        await new Decorator(this.logger).run();
-        break;
-      case 'facade':
-        await new Facade(this.logger).run();
-        break;
-      case 'flyweight':
-        await new Flyweight(this.logger).run();
-        break;
-      case 'proxy':
-        await new Proxy(this.logger).run();
+      case 'chain-of-responsibility':
+        await new ChainOfResponsibility(this.logger).run();
         break;
       case 'help':
-        new HelpCommand(this.logger, 'large', 'behavioral').show();
+        new HelpCommand(this.logger, 'large', 'structural').show();
         break;
       default:
-        new HelpCommand(this.logger, 'large', 'behavioral').show();
+        new HelpCommand(this.logger, 'large', 'structural').show();
         break;
     }
   };

@@ -1,12 +1,10 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
+import { BehavioralCommand, CreationalCommand, StructuralCommand } from '@/command/design';
 import { BaseEnv, Environment as E } from '@/configs';
 import i18n from '@/locales/i18n';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
-import { BehavioralCommand } from './behavioral.command';
-import { CreationalCommand } from './creational.command';
-import { StructuralCommand } from './structural.command';
 
 interface LargeCategoryAnswer extends Answers {
   pattern: 'help' | 'creational' | 'structural' | 'behavioral';
