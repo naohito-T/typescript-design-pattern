@@ -6,7 +6,7 @@ import { BaseCommand } from './_base.command';
 import { HelpCommand } from './help.command';
 
 interface BehavioralCommandAnswer extends Answers {
-  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade';
+  pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade' | 'flyweight';
 }
 
 const defaultQuestion = {
@@ -33,6 +33,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
           'composite',
           'decorator',
           'facade',
+          'flyweight',
         ] as BehavioralCommandAnswer['pattern'][],
       },
     });
@@ -59,6 +60,9 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
         await new Decorator(this.logger).run();
         break;
       case 'facade':
+        await new Decorator(this.logger).run();
+        break;
+      case 'flyweight':
         await new Decorator(this.logger).run();
         break;
       case 'help':
