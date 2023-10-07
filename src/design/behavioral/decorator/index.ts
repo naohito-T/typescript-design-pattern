@@ -72,23 +72,62 @@ export class Decorator extends BaseCommand<DecoratorAnswer> implements DesignPat
 
   public exampleCode = (): string => `
 ${chalk.bold.bgGreen(`[example code]`)}
+// Component インターフェース: これはデコレートされるオブジェクトの基本インターフェースです。
+interface Component {
+  operation(): string;
+}
 
+// ConcreteComponent: Component インターフェースを実装するクラス。このクラスのインスタンスがデコレートされます。
+class ConcreteComponent implements Component {
+  operation(): string {
+    return 'ConcreteComponent';
+  }
+}
+
+// Decorator: この抽象クラスは Component インターフェースを実装し、Component のインスタンスを保持します。このクラスは具体的なデコレータの基底クラスとして機能します。
+abstract class DecoratorComponent implements Component {
+  protected component: Component;
+
+  constructor(component: Component) {
+    this.component = component;
+  }
+
+  abstract operation(): string;
+}
+
+// 具体的なデコレータ: Decorator クラスを拡張して、新しい機能や振る舞いを追加します。
+class ConcreteDecoratorA extends DecoratorComponent {
+  operation(): string {
+    return \`ConcreteDecoratorA(\${this.component.operation()})\`;
+  }
+}
+
+class ConcreteDecoratorB extends DecoratorComponent {
+  operation(): string {
+    return \`ConcreteDecoratorB(\${this.component.operation()})\`;
+  }
+}
+const simpleComponent = new ConcreteComponent();
+console.log(simpleComponent.operation()); // Output: ConcreteComponent
+
+const decoratedComponentA = new ConcreteDecoratorA(simpleComponent);
+console.log(decoratedComponentA.operation()); // Output: ConcreteDecoratorA(ConcreteComponent)
+
+const decoratedComponentB = new ConcreteDecoratorB(decoratedComponentA);
+console.log(decoratedComponentB.operation()); // Output: ConcreteDecoratorB(ConcreteDecoratorA(ConcreteComponent))
 `;
 
   public exec = (): void => {
-    // Component インターフェース: これはデコレートされるオブジェクトの基本インターフェースです。
     interface Component {
       operation(): string;
     }
 
-    // ConcreteComponent: Component インターフェースを実装するクラス。このクラスのインスタンスがデコレートされます。
     class ConcreteComponent implements Component {
       operation(): string {
         return 'ConcreteComponent';
       }
     }
 
-    // Decorator: この抽象クラスは Component インターフェースを実装し、Component のインスタンスを保持します。このクラスは具体的なデコレータの基底クラスとして機能します。
     abstract class DecoratorComponent implements Component {
       protected component: Component;
 
@@ -99,7 +138,6 @@ ${chalk.bold.bgGreen(`[example code]`)}
       abstract operation(): string;
     }
 
-    // 具体的なデコレータ: Decorator クラスを拡張して、新しい機能や振る舞いを追加します。
     class ConcreteDecoratorA extends DecoratorComponent {
       operation(): string {
         return `ConcreteDecoratorA(${this.component.operation()})`;
@@ -111,13 +149,14 @@ ${chalk.bold.bgGreen(`[example code]`)}
         return `ConcreteDecoratorB(${this.component.operation()})`;
       }
     }
+
     const simpleComponent = new ConcreteComponent();
-    console.log(simpleComponent.operation()); // Output: ConcreteComponent
+    console.log(simpleComponent.operation());
 
     const decoratedComponentA = new ConcreteDecoratorA(simpleComponent);
-    console.log(decoratedComponentA.operation()); // Output: ConcreteDecoratorA(ConcreteComponent)
+    console.log(decoratedComponentA.operation());
 
     const decoratedComponentB = new ConcreteDecoratorB(decoratedComponentA);
-    console.log(decoratedComponentB.operation()); // Output: ConcreteDecoratorB(ConcreteDecoratorA(ConcreteComponent))
+    console.log(decoratedComponentB.operation());
   };
 }
