@@ -1,12 +1,12 @@
 import * as chalk from 'chalk';
 import { prompt, Answers } from 'inquirer';
-import { Adapter } from '@/design/behavioral';
+import { Adapter, Bridge } from '@/design/behavioral';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
 import { HelpCommand } from './help.command';
 
 interface BehavioralCommandAnswer extends Answers {
-  pattern: 'help' | 'adapter' | 'abstract-factory' | 'builder' | 'prototype';
+  pattern: 'help' | 'adapter' | 'bridge' | 'builder' | 'prototype';
 }
 
 const defaultQuestion = {
@@ -26,20 +26,14 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Behavioral（ビヘイビア）の項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: [
-          'help',
-          'adapter',
-          'abstract-factory',
-          'builder',
-          'prototype',
-        ] as BehavioralCommandAnswer['pattern'][],
+        choices: ['help', 'adapter', 'bridge', 'builder', 'prototype'] as BehavioralCommandAnswer['pattern'][],
       },
     });
   }
 
   public run = async (): Promise<void> => {
     const answers = await prompt(this.question);
-    this.logger.debug(`CreationalCommand answers: ${answers}`);
+    this.logger.debug(`BehavioralCommand answers: ${answers}`);
     await this.handler(answers);
   };
 
@@ -48,7 +42,8 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
       case 'adapter':
         await new Adapter(this.logger).run();
         break;
-      case 'abstract-factory':
+      case 'bridge':
+        await new Bridge(this.logger).run();
         break;
       case 'builder':
         break;
