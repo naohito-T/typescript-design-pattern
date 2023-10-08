@@ -2,11 +2,11 @@ import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
-import { ChainOfResponsibility, Command, Interpreter, Iterator } from '@/design/structural';
+import { ChainOfResponsibility, Command, Interpreter, Iterator, Mediator, Memento } from '@/design/structural';
 import { ILogger } from '@/logger';
 
 interface StructuralCommandAnswer extends Answers {
-  pattern: 'help' | 'chain-of-responsibility' | 'command' | 'interpreter' | 'iterator';
+  pattern: 'help' | 'chain-of-responsibility' | 'command' | 'interpreter' | 'iterator' | 'mediator' | 'memento';
 }
 
 const defaultQuestion = {
@@ -35,6 +35,8 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
           'command',
           'interpreter',
           'iterator',
+          'mediator',
+          'memento',
         ] as StructuralCommandAnswer['pattern'][],
       },
     });
@@ -59,6 +61,12 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
         break;
       case 'iterator':
         await new Iterator(this.p, this.logger).run();
+        break;
+      case 'mediator':
+        await new Mediator(this.p, this.logger).run();
+        break;
+      case 'memento':
+        await new Memento(this.p, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'structural').show();
