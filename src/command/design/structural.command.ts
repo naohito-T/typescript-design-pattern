@@ -6,7 +6,7 @@ import { ChainOfResponsibility, Command } from '@/design/structural';
 import { ILogger } from '@/logger';
 
 interface StructuralCommandAnswer extends Answers {
-  pattern: 'help' | 'chain-of-responsibility' | 'command';
+  pattern: 'help' | 'chain-of-responsibility' | 'command' | 'interpreter';
 }
 
 const defaultQuestion = {
@@ -29,7 +29,7 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
         message: `-------------------------------\n  ${chalk.bold.blue(
           `Structural（ストラクチャー）の項目から実行するパターンを選んでください。\n`,
         )}`,
-        choices: ['help', 'chain-of-responsibility', 'command'] as StructuralCommandAnswer['pattern'][],
+        choices: ['help', 'chain-of-responsibility', 'command', 'interpreter'] as StructuralCommandAnswer['pattern'][],
       },
     });
   }
@@ -46,6 +46,9 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
         await new ChainOfResponsibility(this.p, this.logger).run();
         break;
       case 'command':
+        await new Command(this.p, this.logger).run();
+        break;
+      case 'interpreter':
         await new Command(this.p, this.logger).run();
         break;
       case 'help':
