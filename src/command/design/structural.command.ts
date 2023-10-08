@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { prompt, Answers } from 'inquirer';
+import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { ChainOfResponsibility } from '@/design/structural';
@@ -18,7 +18,10 @@ const defaultQuestion = {
 export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
   public readonly question;
 
-  constructor(private readonly logger: ILogger) {
+  constructor(
+    private readonly p: PromptModule,
+    private readonly logger: ILogger,
+  ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
@@ -32,7 +35,7 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
   }
 
   public run = async (): Promise<void> => {
-    const answers = await prompt(this.question);
+    const answers = await this.p(this.question);
     this.logger.debug(`BehavioralCommand answers: ${answers}`);
     await this.handler(answers);
   };
@@ -40,7 +43,7 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
   private handler = async (answers: StructuralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'chain-of-responsibility':
-        await new ChainOfResponsibility(this.logger).run();
+        await new ChainOfResponsibility(this.p, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'structural').show();

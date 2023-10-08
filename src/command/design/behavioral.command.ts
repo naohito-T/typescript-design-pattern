@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { prompt, Answers } from 'inquirer';
+import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy } from '@/design/behavioral';
@@ -18,7 +18,10 @@ const defaultQuestion = {
 export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
   public readonly question;
 
-  constructor(private readonly logger: ILogger) {
+  constructor(
+    private readonly p: PromptModule,
+    private readonly logger: ILogger,
+  ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
@@ -41,7 +44,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
   }
 
   public run = async (): Promise<void> => {
-    const answers = await prompt(this.question);
+    const answers = await this.p(this.question);
     this.logger.debug(`BehavioralCommand answers: ${answers}`);
     await this.handler(answers);
   };
@@ -49,25 +52,25 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
   private handler = async (answers: BehavioralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'adapter':
-        await new Adapter(this.logger).run();
+        await new Adapter(this.p, this.logger).run();
         break;
       case 'bridge':
-        await new Bridge(this.logger).run();
+        await new Bridge(this.p, this.logger).run();
         break;
       case 'composite':
-        await new Composite(this.logger).run();
+        await new Composite(this.p, this.logger).run();
         break;
       case 'decorator':
-        await new Decorator(this.logger).run();
+        await new Decorator(this.p, this.logger).run();
         break;
       case 'facade':
-        await new Facade(this.logger).run();
+        await new Facade(this.p, this.logger).run();
         break;
       case 'flyweight':
-        await new Flyweight(this.logger).run();
+        await new Flyweight(this.p, this.logger).run();
         break;
       case 'proxy':
-        await new Proxy(this.logger).run();
+        await new Proxy(this.p, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'behavioral').show();

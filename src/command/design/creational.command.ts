@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { prompt, Answers } from 'inquirer';
+import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { FactoryMethod, AbstractFactory, Builder, Prototype } from '@/design/creational';
@@ -18,7 +18,10 @@ const defaultQuestion = {
 export class CreationalCommand extends BaseCommand<CreationalAnswer> {
   public readonly question;
 
-  constructor(private readonly logger: ILogger) {
+  constructor(
+    private readonly p: PromptModule,
+    private readonly logger: ILogger,
+  ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
@@ -38,7 +41,7 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
   }
 
   public run = async (): Promise<void> => {
-    const answers = await prompt(this.question);
+    const answers = await this.p(this.question);
     this.logger.debug(`CreationalCommand answers: ${answers}`);
     await this.handler(answers);
   };
@@ -46,16 +49,16 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
   private handler = async (answers: CreationalAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'factory-method':
-        await new FactoryMethod(this.logger).run();
+        await new FactoryMethod(this.p, this.logger).run();
         break;
       case 'abstract-factory':
-        await new AbstractFactory(this.logger).run();
+        await new AbstractFactory(this.p, this.logger).run();
         break;
       case 'builder':
-        await new Builder(this.logger).run();
+        await new Builder(this.p, this.logger).run();
         break;
       case 'prototype':
-        await new Prototype(this.logger).run();
+        await new Prototype(this.p, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'creational').show();
