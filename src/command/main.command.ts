@@ -1,11 +1,10 @@
 import * as chalk from 'chalk';
-import { prompt, Answers } from 'inquirer';
+import { PromptModule, Answers } from 'inquirer';
+import { BehavioralCommand, CreationalCommand, StructuralCommand } from '@/command/design';
 import { BaseEnv, Environment as E } from '@/configs';
 import i18n from '@/locales/i18n';
 import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
-import { BehavioralCommand } from './behavioral.command';
-import { CreationalCommand } from './creational.command';
 
 interface LargeCategoryAnswer extends Answers {
   pattern: 'help' | 'creational' | 'structural' | 'behavioral';
@@ -21,7 +20,10 @@ const defaultQuestion = {
 export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
   public readonly question;
 
-  constructor(private readonly logger: ILogger) {
+  constructor(
+    private readonly p: PromptModule,
+    private readonly logger: ILogger,
+  ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
@@ -35,7 +37,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
   }
 
   public run = async (): Promise<void> => {
-    const answers = await prompt(this.question);
+    const answers = await this.p(this.question);
     this.logger.debug(`MainCommand answers: ${JSON.stringify(answers)}`);
     this.logger.debug(`Env STAGE: ${BaseEnv.stage}`);
     this.logger.debug(`Env VERSION: ${E.VERSION}`);
@@ -46,14 +48,15 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
     switch (answers.pattern) {
       case 'creational':
         this.logger.debug(`MainCommand answers: creational`);
-        await new CreationalCommand(this.logger).run();
+        await new CreationalCommand(this.p, this.logger).run();
         break;
       case 'structural':
         this.logger.debug(`MainCommand answers: structural`);
+        await new StructuralCommand(this.p, this.logger).run();
         break;
       case 'behavioral':
         this.logger.debug(`MainCommand answers: behavioral`);
-        await new BehavioralCommand(this.logger).run();
+        await new BehavioralCommand(this.p, this.logger).run();
         break;
       case 'help':
         console.log('Help: 以下のデザインパターンから選んでください...');

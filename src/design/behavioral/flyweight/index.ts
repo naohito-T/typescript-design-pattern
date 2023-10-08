@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { prompt, Answers } from 'inquirer';
+import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
 import { ILogger } from '@/logger';
@@ -17,7 +17,10 @@ const defaultQuestion = {
 export class Flyweight extends BaseCommand<FlyweightAnswer> implements DesignPatternInfo {
   public readonly question;
 
-  constructor(private readonly logger: ILogger) {
+  constructor(
+    private readonly p: PromptModule,
+    private readonly logger: ILogger,
+  ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
@@ -37,7 +40,7 @@ export class Flyweight extends BaseCommand<FlyweightAnswer> implements DesignPat
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await prompt(this.question);
+    const selectedOptions = await this.p(this.question);
 
     this.logger.debug(`Composite answers: ${JSON.stringify(selectedOptions)}`);
 

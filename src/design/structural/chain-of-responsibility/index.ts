@@ -4,7 +4,7 @@ import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
 import { ILogger } from '@/logger';
 
-interface AdapterAnswer extends Answers {
+interface ChainOfResponsibilityAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
 }
 
@@ -14,7 +14,7 @@ const defaultQuestion = {
   default: 'help',
 };
 
-export class Adapter extends BaseCommand<AdapterAnswer> implements DesignPatternInfo {
+export class ChainOfResponsibility extends BaseCommand<ChainOfResponsibilityAnswer> implements DesignPatternInfo {
   public readonly question;
 
   constructor(
@@ -26,7 +26,7 @@ export class Adapter extends BaseCommand<AdapterAnswer> implements DesignPattern
       ...defaultQuestion,
       ...{
         message: `-------------------------------\n  ${chalk.bold.blue(
-          `Creationalの項目から実行するパターンを選んでください。\n`,
+          `ChainOfResponsibilityの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
           { name: 'help' },
@@ -66,7 +66,9 @@ export class Adapter extends BaseCommand<AdapterAnswer> implements DesignPattern
     outputMsg.forEach((msg) => console.log(msg));
   };
 
-  public description = () => `${chalk.bold.bgGreen(`[description]`)}`;
+  public description = () => `
+${chalk.bold.bgGreen(`[description]`)}
+`;
 
   /** @wip */
   public flowChart = () => {
@@ -75,64 +77,53 @@ export class Adapter extends BaseCommand<AdapterAnswer> implements DesignPattern
 
   public exampleCode = (): string => `
 ${chalk.bold.bgGreen(`[example code]`)}
-// 既存クラスで改良を加えにくいパターンがあるとする
-class OldPrinter {
-  printOld(msg: string): void {
-    console.log(\`Printing using old method: \${msg}\`);
-  }
-}
-
-// 新しく実装したいやつ。そのためインターフェースを作成する
-interface NewPrinterInterface {
-  print(msg: string): void;
-}
-
-// Adapterクラス（中間層を用意する）
-class PrinterAdapter implements NewPrinterInterface {
-  private oldPrinter: OldPrinter;
-
-  constructor(oldPrinter: OldPrinter) {
-    this.oldPrinter = oldPrinter;
-  }
-
-  // ここで新しく実装するメソッドとして定義し、旧メソッドを実行する
-  print(msg: string): void {
-    this.oldPrinter.printOld(msg);
-  }
-}
-
-// 使用例
-const oldPrinter = new OldPrinter();
-const adaptedPrinter = new PrinterAdapter(oldPrinter);
-adaptedPrinter.print('Hello, World!'); // Output: Printing using old method: Hello, World!
 `;
 
   public exec = (): void => {
-    class OldPrinter {
-      printOld(msg: string): void {
-        console.log(`Printing using old method: ${msg}`);
+    // この例では、ConcreteHandlerA と ConcreteHandlerB が異なる要求を処理するためのハンドラとして存在します。要求が適切なハンドラに到達するまで、ハンドラの連鎖を通過します。
+    abstract class Handler {
+      protected nextHandler?: Handler;
+
+      setNext(handler: Handler): Handler {
+        this.nextHandler = handler;
+        return handler;
+      }
+
+      handle(request: string): void {
+        if (this.nextHandler) {
+          this.nextHandler.handle(request);
+        }
       }
     }
 
-    interface NewPrinterInterface {
-      print(msg: string): void;
-    }
-
-    class PrinterAdapter implements NewPrinterInterface {
-      private oldPrinter: OldPrinter;
-
-      constructor(oldPrinter: OldPrinter) {
-        this.oldPrinter = oldPrinter;
-      }
-
-      print(msg: string): void {
-        this.oldPrinter.printOld(msg);
+    class ConcreteHandlerA extends Handler {
+      handle(request: string): void {
+        if (request === 'requestA') {
+          console.log('ConcreteHandlerA handling requestA');
+        } else if (this.nextHandler) {
+          this.nextHandler.handle(request);
+        }
       }
     }
 
-    const oldPrinter = new OldPrinter();
-    const adaptedPrinter = new PrinterAdapter(oldPrinter);
+    class ConcreteHandlerB extends Handler {
+      handle(request: string): void {
+        if (request === 'requestB') {
+          console.log('ConcreteHandlerB handling requestB');
+        } else if (this.nextHandler) {
+          this.nextHandler.handle(request);
+        }
+      }
+    }
 
-    adaptedPrinter.print('Hello, World!');
+    // Client code
+    const handlerA = new ConcreteHandlerA();
+    const handlerB = new ConcreteHandlerB();
+
+    handlerA.setNext(handlerB);
+
+    handlerA.handle('requestA'); // Outputs: ConcreteHandlerA handling requestA
+    handlerA.handle('requestB'); // Outputs: ConcreteHandlerB handling requestB
+    handlerA.handle('requestC'); // No output, no handler for requestC
   };
 }
