@@ -2,11 +2,29 @@ import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
-import { ChainOfResponsibility, Command, Interpreter, Iterator, Mediator, Memento } from '@/design/structural';
+import {
+  ChainOfResponsibility,
+  Command,
+  Interpreter,
+  Iterator,
+  Mediator,
+  Memento,
+  Observer,
+  State,
+} from '@/design/structural';
 import { ILogger } from '@/logger';
 
 interface StructuralCommandAnswer extends Answers {
-  pattern: 'help' | 'chain-of-responsibility' | 'command' | 'interpreter' | 'iterator' | 'mediator' | 'memento';
+  pattern:
+    | 'help'
+    | 'chain-of-responsibility'
+    | 'command'
+    | 'interpreter'
+    | 'iterator'
+    | 'mediator'
+    | 'memento'
+    | 'observer'
+    | 'state';
 }
 
 const defaultQuestion = {
@@ -37,6 +55,8 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
           'iterator',
           'mediator',
           'memento',
+          'observer',
+          'state',
         ] as StructuralCommandAnswer['pattern'][],
       },
     });
@@ -67,6 +87,12 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
         break;
       case 'memento':
         await new Memento(this.p, this.logger).run();
+        break;
+      case 'observer':
+        await new Observer(this.p, this.logger).run();
+        break;
+      case 'state':
+        await new State(this.p, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'structural').show();
