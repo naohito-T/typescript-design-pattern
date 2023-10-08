@@ -77,7 +77,72 @@ ${chalk.bold.bgGreen(`[description]`)}
 
   public exampleCode = (): string => `
 ${chalk.bold.bgGreen(`[example code]`)}
+// この例では、\`ConcreteAggregate\`というコレクションと、そのコレクションを走査するための\`ConcreteIterator\`を実装しています。イテレータを使用することで、コレクションの内部構造を知らない状態で要素にアクセスできます。
 
+interface Iterator<T> {
+  hasNext(): boolean;
+  next(): T;
+}
+
+interface Aggregate<T> {
+  createIterator(): Iterator<T>;
+}
+
+// 走査クラス（走査方法を提供する）
+class ConcreteIterator implements Iterator<number> {
+  private aggregate: ConcreteAggregate;
+
+  private index: number = 0;
+
+  constructor(aggregate: ConcreteAggregate) {
+    this.aggregate = aggregate;
+  }
+
+  // 次のインデックスを持っているか。
+  hasNext(): boolean {
+    return this.index < this.aggregate.length;
+  }
+
+  // 走査方法は対象のindexを取得し、次のindexをセットする。
+  next(): number {
+    const result = this.aggregate.getItem(this.index);
+    this.index++;
+    return result;
+  }
+}
+
+// リストクラス（走査方法はクラス内部で指定する）
+class ConcreteAggregate implements Aggregate<number> {
+  private items: number[] = [];
+
+  addItem(item: number) {
+    this.items.push(item);
+  }
+
+  createIterator(): Iterator<number> {
+    // iterator（走査）クラスに自身の参照を渡す
+    return new ConcreteIterator(this);
+  }
+
+  getItem(index: number): number {
+    return this.items[index];
+  }
+
+  get length(): number {
+    return this.items.length;
+  }
+}
+
+const aggregate = new ConcreteAggregate();
+aggregate.addItem(1);
+aggregate.addItem(2);
+aggregate.addItem(3);
+aggregate.addItem(4);
+
+const iterator = aggregate.createIterator();
+while (iterator.hasNext()) {
+  console.log(iterator.next());
+}
 `;
 
   public exec = (): void => {
@@ -92,6 +157,7 @@ ${chalk.bold.bgGreen(`[example code]`)}
       createIterator(): Iterator<T>;
     }
 
+    // 走査クラス（走査方法を提供する）
     class ConcreteIterator implements Iterator<number> {
       private aggregate: ConcreteAggregate;
 
@@ -101,10 +167,12 @@ ${chalk.bold.bgGreen(`[example code]`)}
         this.aggregate = aggregate;
       }
 
+      // 次のインデックスを持っているか。
       hasNext(): boolean {
         return this.index < this.aggregate.length;
       }
 
+      // 走査方法は対象のindexを取得し、次のindexをセットする。
       next(): number {
         const result = this.aggregate.getItem(this.index);
         this.index++;
@@ -112,6 +180,7 @@ ${chalk.bold.bgGreen(`[example code]`)}
       }
     }
 
+    // リストクラス（走査方法はクラス内部で指定する）
     class ConcreteAggregate implements Aggregate<number> {
       private items: number[] = [];
 
@@ -120,6 +189,7 @@ ${chalk.bold.bgGreen(`[example code]`)}
       }
 
       createIterator(): Iterator<number> {
+        // iterator（走査）クラスに自身の参照を渡す
         return new ConcreteIterator(this);
       }
 
