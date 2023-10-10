@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Bridge extends BaseCommand<BridgeAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

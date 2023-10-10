@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Observer extends BaseCommand<ObserverAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

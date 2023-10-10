@@ -18,7 +18,7 @@ const defaultQuestion = {
 
 /** @description entrypoint */
 export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,
@@ -61,6 +61,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
         break;
       default:
         this.logger.debug(`MainCommand answers: default`);
+        new HelpCommand(this.logger, 'large', 'abstract-factory').show();
         break;
     }
   };

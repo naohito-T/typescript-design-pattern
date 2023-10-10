@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class ChainOfResponsibility extends BaseCommand<ChainOfResponsibilityAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Adapter extends BaseCommand<AdapterAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

@@ -34,7 +34,7 @@ const defaultQuestion = {
 };
 
 export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

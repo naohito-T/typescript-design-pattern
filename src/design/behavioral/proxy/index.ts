@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Proxy extends BaseCommand<ProxyAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

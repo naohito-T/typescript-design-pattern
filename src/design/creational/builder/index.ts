@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Builder extends BaseCommand<BuilderAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

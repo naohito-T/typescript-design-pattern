@@ -16,7 +16,7 @@ const defaultQuestion = {
 };
 
 export class CreationalCommand extends BaseCommand<CreationalAnswer> {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

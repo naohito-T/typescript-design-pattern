@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Iterator extends BaseCommand<IteratorAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

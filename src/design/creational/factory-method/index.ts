@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class FactoryMethod extends BaseCommand<FactoryMethodAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

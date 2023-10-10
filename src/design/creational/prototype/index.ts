@@ -16,7 +16,7 @@ const defaultQuestion = {
 };
 
 export class Prototype extends BaseCommand<PrototypeAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

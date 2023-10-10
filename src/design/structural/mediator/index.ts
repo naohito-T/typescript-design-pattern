@@ -15,7 +15,7 @@ const defaultQuestion = {
 };
 
 export class Mediator extends BaseCommand<MediatorAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,

@@ -16,7 +16,7 @@ const defaultQuestion = {
 };
 
 export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,
