@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface MediatorAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
@@ -40,13 +40,16 @@ export class Mediator extends BaseCommand<MediatorAnswer> implements DesignPatte
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await this.p(this.question);
+    const answers = await this.p(this.question);
+    await this.handler(answers);
+  };
 
-    this.logger.debug(`Iterator answers: ${JSON.stringify(selectedOptions)}`);
+  protected handler = async (answers: MediatorAnswer): Promise<void> => {
+    this.logger.debug(`Iterator answers: ${JSON.stringify(answers)}`);
 
     const outputMsg: string[] = [];
 
-    selectedOptions.outputs.forEach((option) => {
+    answers.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
         return; // 脱出するように
@@ -128,7 +131,7 @@ ${chalk.bold.bgGreen(`[example code]`)}
         this.colleagueB = colleague;
       }
 
-      notify(sender: Colleague, event: string): void {
+      notify(_sender: Colleague, event: string): void {
         // 片方のeventが行われたら片方も行う。
         if (event === 'ActionA') {
           this.colleagueB?.action();

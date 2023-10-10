@@ -1,5 +1,5 @@
 import { HelpConstructor as C } from '@/configs';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 type MessageCategory = 'large' | 'medium' | 'small';
 
@@ -7,6 +7,16 @@ type DesignPatterns = {
   creational: string;
   structural: string;
   behavioral: string;
+  'factory-method': string;
+  'abstract-factory': string;
+  builder: string;
+  prototype: string;
+};
+
+const a = {
+  large: {
+    description: '',
+  },
 };
 
 export class HelpCommand {
@@ -24,9 +34,10 @@ export class HelpCommand {
     [
       'medium',
       {
-        creational: 'Medium Creational Design Patternの説明...',
-        structural: 'Medium Structural Design Patternの説明...',
-        behavioral: 'Medium Behavioral Design Patternの説明...',
+        'factory-method': 'Medium Creational Design Patternの説明...',
+        'abstract-factory': 'Medium Structural Design Patternの説明...',
+        builder: 'Medium Behavioral Design Patternの説明...',
+        prototype: 'Medium Behavioral Design Patternの説明...',
       },
     ],
     [

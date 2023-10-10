@@ -3,7 +3,7 @@ import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy } from '@/design/behavioral';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface BehavioralCommandAnswer extends Answers {
   pattern: 'help' | 'adapter' | 'bridge' | 'composite' | 'decorator' | 'facade' | 'flyweight' | 'proxy';
@@ -49,7 +49,7 @@ export class BehavioralCommand extends BaseCommand<BehavioralCommandAnswer> {
     await this.handler(answers);
   };
 
-  private handler = async (answers: BehavioralCommandAnswer): Promise<void> => {
+  protected handler = async (answers: BehavioralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'adapter':
         await new Adapter(this.p, this.logger).run();

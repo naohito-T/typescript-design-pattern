@@ -1,10 +1,10 @@
 import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BehavioralCommand, CreationalCommand, StructuralCommand } from '@/command/design';
-import { BaseEnv, Environment as E } from '@/configs';
+import { ILogger } from '@/libs/logger';
 import i18n from '@/locales/i18n';
-import { ILogger } from '@/logger';
 import { BaseCommand } from './_base.command';
+import { HelpCommand } from './help';
 
 interface LargeCategoryAnswer extends Answers {
   pattern: 'help' | 'creational' | 'structural' | 'behavioral';
@@ -38,13 +38,10 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
 
   public run = async (): Promise<void> => {
     const answers = await this.p(this.question);
-    this.logger.debug(`MainCommand answers: ${JSON.stringify(answers)}`);
-    this.logger.debug(`Env STAGE: ${BaseEnv.stage}`);
-    this.logger.debug(`Env VERSION: ${E.VERSION}`);
     await this.handler(answers);
   };
 
-  private handler = async (answers: LargeCategoryAnswer): Promise<void> => {
+  protected handler = async (answers: LargeCategoryAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'creational':
         this.logger.debug(`MainCommand answers: creational`);
@@ -60,6 +57,7 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
         break;
       case 'help':
         console.log('Help: 以下のデザインパターンから選んでください...');
+        new HelpCommand(this.logger, 'large', 'abstract-factory').show();
         break;
       default:
         this.logger.debug(`MainCommand answers: default`);

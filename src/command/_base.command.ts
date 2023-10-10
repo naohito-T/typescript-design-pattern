@@ -9,4 +9,7 @@ export abstract class BaseCommand<T extends Answers> {
 
   /** @description questionを組み立てる */
   protected buildQuestion = (question: Question<T>): QuestionCollection<T> => [{ ...question }];
+
+  /** @description questionをハンドリングする */
+  protected abstract handler(answers: T): Promise<void>;
 }

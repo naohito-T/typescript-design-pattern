@@ -12,7 +12,7 @@ import {
   Observer,
   State,
 } from '@/design/structural';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface StructuralCommandAnswer extends Answers {
   pattern:
@@ -68,7 +68,7 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
     await this.handler(answers);
   };
 
-  private handler = async (answers: StructuralCommandAnswer): Promise<void> => {
+  protected handler = async (answers: StructuralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'chain-of-responsibility':
         await new ChainOfResponsibility(this.p, this.logger).run();

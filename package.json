@@ -22,12 +22,12 @@
     "start:locale": "ts-node src/locales/i18n.ts",
     "build": "swc src -d dist",
     "c:type": "tsc --noEmit",
-    "c:lint": "eslint --max-warnings 0 --ext js,ts .",
+    "c:eslint": "eslint --max-warnings 0 --ext js,ts .",
     "c:format": "prettier --check .",
-    "w:lint": "eslint --fix --ext js,ts .",
+    "w:eslint": "eslint --fix --ext js,ts .",
     "w:format": "prettier --write .",
-    "lint": "run-p c:type c:lint c:format",
-    "lint:fix": "run-p w:lint w:format",
+    "lint": "run-p c:type c:eslint c:format",
+    "lint:fix": "run-p w:eslint w:format",
     "test": "jest -c ./tests/jest.config.js"
   },
   "dependencies": {

@@ -1,8 +1,9 @@
 import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
+import { HelpCommand } from '@/command/help';
 import { DesignPatternInfo } from '@/design/design.interface';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface PrototypeAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
@@ -40,15 +41,19 @@ export class Prototype extends BaseCommand<PrototypeAnswer> implements DesignPat
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await this.p(this.question);
+    const answers = await this.p(this.question);
+    await this.handler(answers);
+  };
 
-    this.logger.debug(`Builder answers: ${JSON.stringify(selectedOptions)}`);
+  protected handler = async (answers: PrototypeAnswer): Promise<void> => {
+    this.logger.debug(`Builder answers: ${JSON.stringify(answers)}`);
 
     const outputMsg: string[] = [];
 
-    selectedOptions.outputs.forEach((option) => {
+    answers.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
+        new HelpCommand(this.logger, 'medium', 'prototype').show();
         return; // 脱出するように
       } else if (option === 'exec') {
         console.log('execが選択されました');

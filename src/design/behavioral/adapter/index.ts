@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface AdapterAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
@@ -40,13 +40,16 @@ export class Adapter extends BaseCommand<AdapterAnswer> implements DesignPattern
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await this.p(this.question);
+    const answers = await this.p(this.question);
+    await this.handler(answers);
+  };
 
-    this.logger.debug(`AbstractFactory answers: ${JSON.stringify(selectedOptions)}`);
+  protected handler = async (answers: AdapterAnswer): Promise<void> => {
+    this.logger.debug(`AbstractFactory answers: ${JSON.stringify(answers)}`);
 
     const outputMsg: string[] = [];
 
-    selectedOptions.outputs.forEach((option) => {
+    answers.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
         return; // 脱出するように

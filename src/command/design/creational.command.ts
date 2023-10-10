@@ -3,7 +3,7 @@ import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { FactoryMethod, AbstractFactory, Builder, Prototype } from '@/design/creational';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface CreationalAnswer extends Answers {
   pattern: 'help' | 'factory-method' | 'abstract-factory' | 'builder' | 'prototype';
@@ -46,7 +46,7 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
     await this.handler(answers);
   };
 
-  private handler = async (answers: CreationalAnswer): Promise<void> => {
+  protected handler = async (answers: CreationalAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'factory-method':
         await new FactoryMethod(this.p, this.logger).run();

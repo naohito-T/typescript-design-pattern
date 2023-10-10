@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
-import { ILogger } from '@/logger';
+import { ILogger } from '@/libs/logger';
 
 interface MementoAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
@@ -40,13 +40,16 @@ export class Memento extends BaseCommand<MementoAnswer> implements DesignPattern
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await this.p(this.question);
+    const answers = await this.p(this.question);
+    await this.handler(answers);
+  };
 
-    this.logger.debug(`Memento answers: ${JSON.stringify(selectedOptions)}`);
+  protected handler = async (answers: MementoAnswer): Promise<void> => {
+    this.logger.debug(`Memento answers: ${JSON.stringify(answers)}`);
 
     const outputMsg: string[] = [];
 
-    selectedOptions.outputs.forEach((option) => {
+    answers.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
         return; // 脱出するように
