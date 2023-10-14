@@ -1,8 +1,8 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
-import { ILogger } from '@/logger';
+import { Chalk } from '@/libs/chalk';
+import { ILogger } from '@/libs/logger';
 
 interface BuilderAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
@@ -15,17 +15,18 @@ const defaultQuestion = {
 };
 
 export class Builder extends BaseCommand<BuilderAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Creationalの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -40,13 +41,16 @@ export class Builder extends BaseCommand<BuilderAnswer> implements DesignPattern
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await this.p(this.question);
+    const answers = await this.p(this.question);
+    await this.handler(answers);
+  };
 
-    this.logger.debug(`Builder answers: ${JSON.stringify(selectedOptions)}`);
+  protected handler = async (answers: BuilderAnswer): Promise<void> => {
+    this.logger.debug(`Builder answers: ${JSON.stringify(answers)}`);
 
     const outputMsg: string[] = [];
 
-    selectedOptions.outputs.forEach((option) => {
+    answers.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
         return; // 脱出するように
@@ -67,7 +71,7 @@ export class Builder extends BaseCommand<BuilderAnswer> implements DesignPattern
   };
 
   public description = () => `
-${chalk.bold.bgGreen(`[description]`)}
+${this.c.bold.bgGreen(`[description]`)}
 `;
 
   /** @wip */
@@ -76,11 +80,11 @@ ${chalk.bold.bgGreen(`[description]`)}
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 `;
 
   public exec = (): void => {
-    chalk.bold.bgGreen(`[Exec code]`);
+    this.c.bold.bgGreen(`[Exec code]`);
 
     class Product {
       private parts: string[] = [];

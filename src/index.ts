@@ -1,10 +1,18 @@
 import { MainCommand } from '@/command/main.command';
+import { BaseEnv, Environment as E } from '@/configs';
+import { ChalkClient } from '@/libs/chalk';
 import { InquirerClient } from '@/libs/inquirer';
-import { logger } from '@/logger';
+import { logger } from '@/libs/logger';
 
 try {
   (async () => {
-    const typeScriptDesignPattern = new MainCommand(new InquirerClient().getPrompt(), logger);
+    logger.debug(`Env STAGE: ${BaseEnv.stage}`);
+    logger.debug(`Env VERSION: ${E.VERSION}`);
+    const typeScriptDesignPattern = new MainCommand(
+      new InquirerClient().getPrompt(),
+      new ChalkClient().getChalk(),
+      logger,
+    );
     await typeScriptDesignPattern.run();
     process.exit(0);
   })();

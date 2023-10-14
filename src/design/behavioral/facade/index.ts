@@ -1,8 +1,8 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
-import { ILogger } from '@/logger';
+import { Chalk } from '@/libs/chalk';
+import { ILogger } from '@/libs/logger';
 
 interface FacadeAnswer extends Answers {
   outputs: ('help' | 'exec' | 'description' | 'flow-chart' | 'example-code')[];
@@ -15,17 +15,18 @@ const defaultQuestion = {
 };
 
 export class Facade extends BaseCommand<FacadeAnswer> implements DesignPatternInfo {
-  public readonly question;
+  protected readonly question;
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Facadeの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -40,13 +41,16 @@ export class Facade extends BaseCommand<FacadeAnswer> implements DesignPatternIn
   }
 
   public run = async (): Promise<void> => {
-    const selectedOptions = await this.p(this.question);
+    const answers = await this.p(this.question);
+    await this.handler(answers);
+  };
 
-    this.logger.debug(`Composite answers: ${JSON.stringify(selectedOptions)}`);
+  protected handler = async (answers: FacadeAnswer): Promise<void> => {
+    this.logger.debug(`Composite answers: ${JSON.stringify(answers)}`);
 
     const outputMsg: string[] = [];
 
-    selectedOptions.outputs.forEach((option) => {
+    answers.outputs.forEach((option) => {
       if (option === 'help') {
         console.log('helpが選択されました');
         return; // 脱出するように
@@ -66,7 +70,7 @@ export class Facade extends BaseCommand<FacadeAnswer> implements DesignPatternIn
     outputMsg.forEach((msg) => console.log(msg));
   };
 
-  public description = () => `${chalk.bold.bgGreen(`[description]`)}`;
+  public description = () => `${this.c.bold.bgGreen(`[description]`)}`;
 
   /** @wip */
   public flowChart = () => {
@@ -74,7 +78,7 @@ export class Facade extends BaseCommand<FacadeAnswer> implements DesignPatternIn
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 // 複雑なサブシステムのクラス群
 class Amplifier {
   on() {
