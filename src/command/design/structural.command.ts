@@ -10,6 +10,8 @@ import {
   Memento,
   Observer,
   State,
+  Strategy,
+  Visitor,
 } from '@/design/structural';
 import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
@@ -24,7 +26,9 @@ interface StructuralCommandAnswer extends Answers {
     | 'mediator'
     | 'memento'
     | 'observer'
-    | 'state';
+    | 'state'
+    | 'strategy'
+    | 'visitor';
 }
 
 const defaultQuestion = {
@@ -58,6 +62,8 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
           'memento',
           'observer',
           'state',
+          'strategy',
+          'visitor',
         ] as StructuralCommandAnswer['pattern'][],
       },
     });
@@ -94,6 +100,12 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
         break;
       case 'state':
         await new State(this.p, this.c, this.logger).run();
+        break;
+      case 'strategy':
+        await new Strategy(this.p, this.c, this.logger).run();
+        break;
+      case 'visitor':
+        await new Visitor(this.p, this.c, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'structural').show();
