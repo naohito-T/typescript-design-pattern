@@ -6,3 +6,6 @@ export * from './mediator';
 export * from './memento';
 export * from './observer';
 export * from './state';
+export * from './strategy';
+export * from './template-method';
+export * from './visitor';
