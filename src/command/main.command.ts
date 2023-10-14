@@ -1,6 +1,6 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BehavioralCommand, CreationalCommand, StructuralCommand } from '@/command/design';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 import i18n from '@/locales/i18n';
 import { BaseCommand } from './_base.command';
@@ -22,13 +22,14 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.bgBlue(
+        message: `-------------------------------\n  ${this.c.bold.bgBlue(
           `${i18n.t('main.message')}`,
         )}\n  -------------------------------\n\n  以下の項目から実行するdesign patternの大カテゴリを選んでください。\n`,
         choices: ['creational', 'structural', 'behavioral', 'help'] as LargeCategoryAnswer['pattern'][],
@@ -45,15 +46,15 @@ export class MainCommand extends BaseCommand<LargeCategoryAnswer> {
     switch (answers.pattern) {
       case 'creational':
         this.logger.debug(`MainCommand answers: creational`);
-        await new CreationalCommand(this.p, this.logger).run();
+        await new CreationalCommand(this.p, this.c, this.logger).run();
         break;
       case 'structural':
         this.logger.debug(`MainCommand answers: structural`);
-        await new StructuralCommand(this.p, this.logger).run();
+        await new StructuralCommand(this.p, this.c, this.logger).run();
         break;
       case 'behavioral':
         this.logger.debug(`MainCommand answers: behavioral`);
-        await new BehavioralCommand(this.p, this.logger).run();
+        await new BehavioralCommand(this.p, this.c, this.logger).run();
         break;
       case 'help':
         console.log('Help: 以下のデザインパターンから選んでください...');

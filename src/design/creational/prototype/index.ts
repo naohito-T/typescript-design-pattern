@@ -1,8 +1,8 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { DesignPatternInfo } from '@/design/design.interface';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface PrototypeAnswer extends Answers {
@@ -20,13 +20,14 @@ export class Prototype extends BaseCommand<PrototypeAnswer> implements DesignPat
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Creationalの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -73,7 +74,7 @@ export class Prototype extends BaseCommand<PrototypeAnswer> implements DesignPat
 
   /** @description descriptionを出力する */
   public description = () => `
-${chalk.bold.bgGreen(`[description]`)}
+${this.c.bold.bgGreen(`[description]`)}
 `;
 
   /** @wip */
@@ -83,7 +84,7 @@ ${chalk.bold.bgGreen(`[description]`)}
 
   /** @description example codeを出力する */
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 `;
 
   /** @description example codeを実行する */

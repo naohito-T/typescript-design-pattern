@@ -1,7 +1,7 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface DecoratorAnswer extends Answers {
@@ -19,13 +19,14 @@ export class Decorator extends BaseCommand<DecoratorAnswer> implements DesignPat
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Decoratorの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -69,7 +70,7 @@ export class Decorator extends BaseCommand<DecoratorAnswer> implements DesignPat
     outputMsg.forEach((msg) => console.log(msg));
   };
 
-  public description = () => `${chalk.bold.bgGreen(`[description]`)}`;
+  public description = () => `${this.c.bold.bgGreen(`[description]`)}`;
 
   /** @wip */
   public flowChart = () => {
@@ -77,7 +78,7 @@ export class Decorator extends BaseCommand<DecoratorAnswer> implements DesignPat
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 // Component インターフェース: これはデコレートされるオブジェクトの基本インターフェースです。
 interface Component {
   operation(): string;

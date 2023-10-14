@@ -1,7 +1,7 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface FactoryMethodAnswer extends Answers {
@@ -19,13 +19,14 @@ export class FactoryMethod extends BaseCommand<FactoryMethodAnswer> implements D
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Creationalの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -72,7 +73,7 @@ export class FactoryMethod extends BaseCommand<FactoryMethodAnswer> implements D
   // interfaceの場合はpublicで実装しないといけないため
   // privateにするテクニックを記事にしてもいいかも
   public description = () => `
-${chalk.bold.bgGreen(`[description]`)}
+${this.c.bold.bgGreen(`[description]`)}
 このパターンは「Virtual Constructor」とも呼ばれ、コンストラクターの代わりになるようなメソッドを作ることがキモなパターンです。
 コンストラクターの代わりにインスタンスの工場（Factory）となるメソッド（Method）を作るから「FactoryMethod」パターンなんですね。`;
 
@@ -82,7 +83,7 @@ ${chalk.bold.bgGreen(`[description]`)}
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 /**
  * @desc Robotインターフェース（Product）
  * @note 高レベルのクラス（抽象クラス（Abstract Class））
@@ -188,7 +189,7 @@ console.log(engineRepairer.work()); // 修理中
       }
     }
 
-    chalk.bold.bgGreen(`[exec code]`);
+    this.c.bold.bgGreen(`[exec code]`);
 
     const electronicAssemblerFactory: RobotFactory = new ElectronicAssemblerFactory();
     const electronicAssembler: Robot = electronicAssemblerFactory.createRobot();

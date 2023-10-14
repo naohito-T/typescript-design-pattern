@@ -1,7 +1,7 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface IteratorAnswer extends Answers {
@@ -19,13 +19,14 @@ export class Iterator extends BaseCommand<IteratorAnswer> implements DesignPatte
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Iteratorの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -70,7 +71,7 @@ export class Iterator extends BaseCommand<IteratorAnswer> implements DesignPatte
   };
 
   public description = () => `
-${chalk.bold.bgGreen(`[description]`)}
+${this.c.bold.bgGreen(`[description]`)}
 `;
 
   /** @wip */
@@ -79,7 +80,7 @@ ${chalk.bold.bgGreen(`[description]`)}
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 // この例では、\`ConcreteAggregate\`というコレクションと、そのコレクションを走査するための\`ConcreteIterator\`を実装しています。イテレータを使用することで、コレクションの内部構造を知らない状態で要素にアクセスできます。
 
 interface Iterator<T> {

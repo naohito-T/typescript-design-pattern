@@ -1,7 +1,7 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface BridgeAnswer extends Answers {
@@ -19,13 +19,14 @@ export class Bridge extends BaseCommand<BridgeAnswer> implements DesignPatternIn
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Bridgeの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -69,7 +70,7 @@ export class Bridge extends BaseCommand<BridgeAnswer> implements DesignPatternIn
     outputMsg.forEach((msg) => console.log(msg));
   };
 
-  public description = () => `${chalk.bold.bgGreen(`[description]`)}`;
+  public description = () => `${this.c.bold.bgGreen(`[description]`)}`;
 
   /** @wip */
   public flowChart = () => {
@@ -77,7 +78,7 @@ export class Bridge extends BaseCommand<BridgeAnswer> implements DesignPatternIn
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 // 抽象の部分（Bridgeを形成する）
 interface DrawAPI {
   drawCircle(radius: number, x: number, y: number): void;

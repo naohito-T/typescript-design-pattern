@@ -1,4 +1,3 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
@@ -12,6 +11,7 @@ import {
   Observer,
   State,
 } from '@/design/structural';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface StructuralCommandAnswer extends Answers {
@@ -38,13 +38,14 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Structural（ストラクチャー）の項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -71,28 +72,28 @@ export class StructuralCommand extends BaseCommand<StructuralCommandAnswer> {
   protected handler = async (answers: StructuralCommandAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'chain-of-responsibility':
-        await new ChainOfResponsibility(this.p, this.logger).run();
+        await new ChainOfResponsibility(this.p, this.c, this.logger).run();
         break;
       case 'command':
-        await new Command(this.p, this.logger).run();
+        await new Command(this.p, this.c, this.logger).run();
         break;
       case 'interpreter':
-        await new Interpreter(this.p, this.logger).run();
+        await new Interpreter(this.p, this.c, this.logger).run();
         break;
       case 'iterator':
-        await new Iterator(this.p, this.logger).run();
+        await new Iterator(this.p, this.c, this.logger).run();
         break;
       case 'mediator':
-        await new Mediator(this.p, this.logger).run();
+        await new Mediator(this.p, this.c, this.logger).run();
         break;
       case 'memento':
-        await new Memento(this.p, this.logger).run();
+        await new Memento(this.p, this.c, this.logger).run();
         break;
       case 'observer':
-        await new Observer(this.p, this.logger).run();
+        await new Observer(this.p, this.c, this.logger).run();
         break;
       case 'state':
-        await new State(this.p, this.logger).run();
+        await new State(this.p, this.c, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'structural').show();

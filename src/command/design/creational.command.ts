@@ -1,8 +1,8 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { HelpCommand } from '@/command/help';
 import { FactoryMethod, AbstractFactory, Builder, Prototype } from '@/design/creational';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface CreationalAnswer extends Answers {
@@ -20,13 +20,14 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Creationalの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -49,16 +50,16 @@ export class CreationalCommand extends BaseCommand<CreationalAnswer> {
   protected handler = async (answers: CreationalAnswer): Promise<void> => {
     switch (answers.pattern) {
       case 'factory-method':
-        await new FactoryMethod(this.p, this.logger).run();
+        await new FactoryMethod(this.p, this.c, this.logger).run();
         break;
       case 'abstract-factory':
-        await new AbstractFactory(this.p, this.logger).run();
+        await new AbstractFactory(this.p, this.c, this.logger).run();
         break;
       case 'builder':
-        await new Builder(this.p, this.logger).run();
+        await new Builder(this.p, this.c, this.logger).run();
         break;
       case 'prototype':
-        await new Prototype(this.p, this.logger).run();
+        await new Prototype(this.p, this.c, this.logger).run();
         break;
       case 'help':
         new HelpCommand(this.logger, 'large', 'creational').show();

@@ -1,7 +1,7 @@
-import * as chalk from 'chalk';
 import { PromptModule, Answers } from 'inquirer';
 import { BaseCommand } from '@/command/_base.command';
 import { DesignPatternInfo } from '@/design/design.interface';
+import { Chalk } from '@/libs/chalk';
 import { ILogger } from '@/libs/logger';
 
 interface CommandAnswer extends Answers {
@@ -19,13 +19,14 @@ export class Command extends BaseCommand<CommandAnswer> implements DesignPattern
 
   constructor(
     private readonly p: PromptModule,
+    private readonly c: Chalk,
     private readonly logger: ILogger,
   ) {
     super();
     this.question = this.buildQuestion({
       ...defaultQuestion,
       ...{
-        message: `-------------------------------\n  ${chalk.bold.blue(
+        message: `-------------------------------\n  ${this.c.bold.blue(
           `Commandの項目から実行するパターンを選んでください。\n`,
         )}`,
         choices: [
@@ -70,7 +71,7 @@ export class Command extends BaseCommand<CommandAnswer> implements DesignPattern
   };
 
   public description = () => `
-${chalk.bold.bgGreen(`[description]`)}
+${this.c.bold.bgGreen(`[description]`)}
 `;
 
   /** @wip */
@@ -79,7 +80,7 @@ ${chalk.bold.bgGreen(`[description]`)}
   };
 
   public exampleCode = (): string => `
-${chalk.bold.bgGreen(`[example code]`)}
+${this.c.bold.bgGreen(`[example code]`)}
 // この実装例では、\`Light\`クラスがReceiverとして機能し、\`TurnOnLightCommand\`および\`TurnOffLightCommand\`が具体的なコマンドとして機能します。
 // \`RemoteControl\`クラスはInvokerとして機能します。
 
