@@ -1,0 +1,16 @@
+# https://docs.github.com/ja/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  # npmレジストリをチェックしPRを発行する
+  - package-ecosystem: "npm"
+    directory: "/"
+    # 更新を確認する頻度
+    schedule:
+      interval: "daily"
+      time: "10:00"
+      timezone: "Asia/Tokyo"
+    # assignees:
+    #   - "アサイニーの GitHub アカウントを指定"
+    reviewers:
+      - "@naohito-T"
