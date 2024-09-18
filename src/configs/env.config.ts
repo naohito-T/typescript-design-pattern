@@ -1,4 +1,4 @@
-import { EnvVar } from '~/src/decorator';
+import { EnvVar } from '@/decorator';
 
 export class Environment {
   /** @desc アプリケーションのversion */
